@@ -1,0 +1,28 @@
+Tool to download Humble Indie Bundle binaries by file name
+Author: Eric Anderson <ejona86@gmail.com>
+
+Description
+===========
+
+Primarily for use as a DLAGENT in makepkg.conf in Arch Linux, but generally
+useful when needing to download a particular Humble Bundle file via a script.
+The script does very little other than argument parsing; it effectively has only
+two "real" lines of functionality.
+
+Installation and Usage
+======================
+
+Run the script directly or copy the script to a location like /usr/bin/ for all
+users to use.
+
+The tool uses curl to download the file, or can simply provide the URL needed to
+download the file so a different HTTP downloader such a Wget can be used.
+
+To use as a DLAGENT for the 'hib' scheme, you can modify makepkg.conf:
+DLAGENTS=(...
+    'hib::/usr/bin/hib-dlagent -k 1a2b3c -o %o $(echo %u | cut -c 7-)'
+    ...)
+
+The 'cut -c 7-' removes the 'hib://' portion from the URL.
+
+Run with the -h argument for more information.
