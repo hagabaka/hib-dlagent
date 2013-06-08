@@ -103,6 +103,15 @@ main() {
     DESTINATION="${FILE##*/}"
   fi
 
+  if [ -n "$STORAGE" ]; then
+    STORAGE_FILE=$(/usr/bin/find "$STORAGE" -name "$FILE")
+    if [ -n "$STORAGE_FILE" ]; then
+      echo "Found file: $STORAGE_FILE"
+      ln -s "$STORAGE_FILE" "$DESTINATION"
+      return;
+    fi
+  fi
+
   if [ -n "$USERNAME" ]; then
     login;
     LISTING_PAGES+=("$HOME_PAGE")
@@ -115,15 +124,6 @@ main() {
   if [ -z "$LISTING_PAGES" ]; then
     echo "You must specify at least one of -u and -k" >&1
     exit 1
-  fi
-
-  if [ -n "$STORAGE" ]; then
-    STORAGE_FILE=$(/usr/bin/find "$STORAGE" -name "$FILE")
-    if [ -n "$STORAGE_FILE" ]; then
-      echo "Found file: $STORAGE_FILE"
-      ln -s "$STORAGE_FILE" "$DESTINATION"
-      return;
-    fi
   fi
 
   for LISTING_PAGE in "${LISTING_PAGES[@]}"; do
