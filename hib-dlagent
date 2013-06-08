@@ -92,7 +92,7 @@ main() {
   fi
 
   COOKIE_JAR=$(mktemp)
-  FILE="$1"
+  FILE="${1#hib://}"
 
   if [ -z "$DESTINATION" ]; then
     DESTINATION="${FILE##*/}"
