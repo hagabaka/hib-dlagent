@@ -13,6 +13,7 @@ LISTING_PAGES=()
 USERNAME=
 PASSWORD=
 KEYS=()
+STORAGE=
 
 login() {
   /usr/bin/curl -s --cookie-jar "$COOKIE_JAR" \
@@ -31,6 +32,7 @@ usage() {
   echo
   echo "Usage: $0 [OPTIONS] FILE"
   echo "Options:"
+  echo " -d         Storage directory to look first"
   echo " -h         This help"
   echo " -k <key>   Search key's files. Use multiple times for multiple keys"
   echo " -o <file>  Name to use when saving file"
@@ -52,7 +54,7 @@ main() {
     exit 1
   fi
 
-  while getopts "hk:o:p:su:" opt; do
+  while getopts "hd:k:o:p:su:" opt; do
     case $opt in
       \?)
         exit 1
@@ -60,6 +62,9 @@ main() {
       h)
         usage
         exit 1
+      ;;
+      d)
+        STORAGE="$OPTARG"
       ;;
       k)
         KEYS+=("$OPTARG")
@@ -112,6 +117,15 @@ main() {
     exit 1
   fi
 
+  if [ -n "$STORAGE" ]; then
+    STORAGE_FILE=$(/usr/bin/find "$STORAGE" -name "$FILE")
+    if [ -n "$STORAGE_FILE" ]; then
+      echo "Found file: $STORAGE_FILE"
+      ln -s "$STORAGE_FILE" "$DESTINATION"
+      return;
+    fi
+  fi
+
   for LISTING_PAGE in "${LISTING_PAGES[@]}"; do
     URL=$(discover_url "$LISTING_PAGE")
     if [ -n "$URL" ]; then break; fi
@@ -128,6 +142,10 @@ main() {
   if [ $DOWNLOAD -eq 0 ]; then
     echo "$URL"
   else
+    if [ -n "$STORAGE" ]; then
+      ln -s "$STORAGE/$FILE" "$DESTINATION"
+      DESTINATION="$STORAGE/$FILE"
+    fi
     /usr/bin/curl -C - --retry 3 --retry-delay 3 -o "$DESTINATION" "$URL"
   fi
 }
