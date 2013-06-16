@@ -15,13 +15,13 @@ KEYS=()
 STORAGE=
 
 login() {
-  /usr/bin/curl -s --cookie-jar "$COOKIE_JAR" \
+  curl -s --cookie-jar "$COOKIE_JAR" \
     --data "username=$USERNAME" --data "password=$PASSWORD" "$LOGIN_PAGE"
 }
 
 discover_url() {
   local LISTING_PAGE="$1"
-  /usr/bin/curl -s --cookie "$COOKIE_JAR" "$LISTING_PAGE" | grep "/$FILE?" | \
+  curl -s --cookie "$COOKIE_JAR" "$LISTING_PAGE" | grep "/$FILE?" | \
     sed -e "s/.* data-web='\([^']*\)'.*/\1/" | head -n 1
 }
 
@@ -86,7 +86,7 @@ handle_download() {
   if [ $DOWNLOAD -eq 0 ]; then
     echo "$URL"
   else
-    /usr/bin/curl -C - --retry 3 --retry-delay 3 -o "$SAVE_FILE" "$URL"
+    curl -C - --retry 3 --retry-delay 3 -o "$SAVE_FILE" "$URL"
   fi
 }
 
@@ -166,7 +166,7 @@ main() {
     handle_download "$DESTINATION"
   else
     local STORAGE_FILE
-    STORAGE_FILE=$(/usr/bin/find "$STORAGE" -name "$FILE")
+    STORAGE_FILE=$(find "$STORAGE" -name "$FILE")
     if [ -z "$STORAGE_FILE" ]; then
       STORAGE_FILE="$STORAGE/$FILE"
       handle_download "$STORAGE_FILE"
@@ -181,7 +181,7 @@ main() {
         # because having relative links is nicer and we will undo any symlinks
         # in the path. Therefore, we detect when things have broken and only
         # use readlink when we must.
-        STORAGE_FILE=$(/usr/bin/readlink -f "$STORAGE_FILE")
+        STORAGE_FILE=$(readlink -f "$STORAGE_FILE")
         rm "$DESTINATION"
         ln -s "$STORAGE_FILE" "$DESTINATION"
       fi
