@@ -38,6 +38,7 @@ Options:
  -k <key>   Search key's files. Use multiple times for multiple keys
  -o <file>  Name to use when saving file
  -p <pass>  Use pass to login. If specified multiple times, the last is used
+ -P <pname> The name of the password available via gnome-keyring-query
  -s         Print URL to stdout instead of downloading. Incompatible with -d
  -u <user>  Use user to login. Search account's files. If specified multiple
             times, the last is used
@@ -96,7 +97,7 @@ main() {
     exit 1
   fi
 
-  while getopts "hd:k:o:p:su:" opt; do
+  while getopts "hd:k:o:p:P:su:" opt; do
     case $opt in
       \?)
         exit 1
@@ -116,6 +117,9 @@ main() {
       ;;
       p)
         PASSWORD="$OPTARG"
+      ;;
+      P)
+        PASSWORD="$(gnome-keyring-query get "$OPTARG")"
       ;;
       s)
         DOWNLOAD=0
