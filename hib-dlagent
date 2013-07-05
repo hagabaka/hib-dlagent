@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-VERSION=0.2
+VERSION=0.3
 LOGIN_PAGE=https://www.humblebundle.com/login
 HOME_PAGE=https://www.humblebundle.com/home
 COOKIE_JAR=
