@@ -26,27 +26,27 @@ discover_url() {
 }
 
 usage() {
-  echo "hib-dlagent $VERSION"
-  echo "Tool to download Humble Indie Bundle binaries by file name"
-  echo
-  echo "Usage: $0 [OPTIONS] FILE"
-  echo "Options:"
-  echo " -d <dir>   Directory for searching and saving files. The normal save"
-  echo "            location is still used, but will be a symbolic link"
-  echo " -h         This help"
-  echo " -k <key>   Search key's files. Use multiple times for multiple keys"
-  echo " -o <file>  Name to use when saving file"
-  echo " -p <pass>  Use pass to login. If specified multiple times, the last is"
-  echo "            used"
-  echo " -s         Print URL to stdout instead of downloading. Incompatible"
-  echo "            with -d"
-  echo " -u <user>  Use user to login. Search account's files. If specified"
-  echo "            multiple times, the last is used"
-  echo
-  echo "If you specify -u, then all of that account's bundles are searched. If"
-  echo "a key is associated with a HIB account then you must use -u/-p, since"
-  echo "that key only works when logged into that account. It is not helpful to"
-  echo "specify -k for bundles associated with an account."
+  cat <<EOF
+hib-dlagent $VERSION
+Tool to download Humble Indie Bundle binaries by file name
+
+Usage: $0 [OPTIONS] FILE
+Options:
+ -d <dir>   Directory for searching and saving files. The normal save location
+            is still used, but will be a symbolic link
+ -h         This help
+ -k <key>   Search key's files. Use multiple times for multiple keys
+ -o <file>  Name to use when saving file
+ -p <pass>  Use pass to login. If specified multiple times, the last is used
+ -s         Print URL to stdout instead of downloading. Incompatible with -d
+ -u <user>  Use user to login. Search account's files. If specified multiple
+            times, the last is used
+
+If you specify -u, then all of that account's bundles are searched. If a key is
+associated with a HIB account then you must use -u/-p, since that key only works
+when logged into that account. It is not helpful to specify -k for bundles
+associated with an account.
+EOF
 }
 
 handle_download() {
