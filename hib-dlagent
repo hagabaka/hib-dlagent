@@ -21,7 +21,7 @@ login() {
 
 discover_url() {
   local LISTING_PAGE="$1"
-  curl -s --cookie "$COOKIE_JAR" "$LISTING_PAGE" | grep "/$FILE?" | \
+  curl -s --cookie "$COOKIE_JAR" "$LISTING_PAGE" | grep "/$FILE?" | grep 'data-web=' | \
     sed -e "s/.* data-web='\([^']*\)'.*/\1/" | head -n 1
 }
 
