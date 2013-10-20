@@ -1,3 +1,6 @@
+Version 0.4 - 2013/10/19
+  * Fixed URL scraping due to website change
+
 Version 0.3 - 2013/07/05
   * Support gnome-keyring-query for accessing password
 
