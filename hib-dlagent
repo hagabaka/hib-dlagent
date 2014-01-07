@@ -16,7 +16,7 @@ STORAGE=
 
 login() {
   curl -s --cookie-jar "$COOKIE_JAR" \
-    --data "username=$USERNAME" --data "password=$PASSWORD" "$LOGIN_PAGE"
+    --data-urlencode "username=$USERNAME" --data-urlencode "password=$PASSWORD" "$LOGIN_PAGE"
 }
 
 discover_url() {
