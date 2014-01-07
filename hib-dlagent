@@ -19,8 +19,9 @@ login() {
     read -rsp 'Enter Humble account password: ' PASSWORD
     echo
   fi
-  curl -s --cookie-jar "$COOKIE_JAR" \
-    --data-urlencode "username=$USERNAME" --data-urlencode "password=$PASSWORD" "$LOGIN_PAGE"
+  printf '%s' "$PASSWORD" | \
+    curl -s --cookie-jar "$COOKIE_JAR" \
+      --data-urlencode "username=$USERNAME" --data-urlencode password@- "$LOGIN_PAGE"
 }
 
 discover_url() {
