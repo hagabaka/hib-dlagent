@@ -15,6 +15,10 @@ KEYS=()
 STORAGE=
 
 login() {
+  if [ -z "$PASSWORD" ]; then
+    read -rsp 'Enter Humble account password: ' PASSWORD
+    echo
+  fi
   curl -s --cookie-jar "$COOKIE_JAR" \
     --data-urlencode "username=$USERNAME" --data-urlencode "password=$PASSWORD" "$LOGIN_PAGE"
 }
