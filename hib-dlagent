@@ -88,7 +88,7 @@ handle_download() {
   if [ $DOWNLOAD -eq 0 ]; then
     echo "$URL"
   else
-    curl -C - --retry 3 --retry-delay 3 -o "$SAVE_FILE" "$URL"
+    curl -R -C - --retry 3 --retry-delay 3 -o "$SAVE_FILE" "$URL"
   fi
 }
 
