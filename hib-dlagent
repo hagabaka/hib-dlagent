@@ -6,6 +6,9 @@ LOGIN_PAGE=https://www.humblebundle.com/login
 HOME_PAGE=https://www.humblebundle.com/home
 COOKIE_JAR=
 
+SCRIPT_PATH='/usr/share/hib-dlagent'
+CONFIG_PATH='/etc/hib-dlagent'
+
 FILE=
 DESTINATION=
 DOWNLOAD=1
@@ -19,15 +22,14 @@ login() {
     read -rsp 'Enter Humble account password: ' PASSWORD
     echo
   fi
-  printf '%s' "$PASSWORD" | \
-    curl -s --cookie-jar "$COOKIE_JAR" \
-      --data-urlencode "username=$USERNAME" --data-urlencode password@- "$LOGIN_PAGE"
+  phantomjs --config="$CONFIG_PATH"/phantomjs-config.json --cookies-file="$COOKIE_JAR" \
+    "$SCRIPT_PATH"/login.coffee "$LOGIN_PAGE" "$USERNAME" "$PASSWORD"
 }
 
 discover_url() {
   local LISTING_PAGE="$1"
-  curl -s --cookie "$COOKIE_JAR" "$LISTING_PAGE" | grep "/$FILE?" | grep 'data-web=' | \
-    sed -e "s/.* data-web='\([^']*\)'.*/\1/" | head -n 1
+  phantomjs --config="$CONFIG_PATH"/phantomjs-config.json --cookies-file="$COOKIE_JAR" \
+    "$SCRIPT_PATH"/discover-url.coffee "$LISTING_PAGE" "$FILE" "$USERNAME" "$PASSWORD"
 }
 
 usage() {
@@ -47,6 +49,8 @@ Options:
  -s         Print URL to stdout instead of downloading. Incompatible with -d
  -u <user>  Use user to login. Search account's files. If specified multiple
             times, the last is used
+ -S <dir>   Directory where PhantomJs scripts are located.
+ -c <dir>   Directory where configuration files are located.
 
 If you specify -u, then all of that account's bundles are searched. If a key is
 associated with a HIB account then you must use -u/-p, since that key only works
@@ -102,7 +106,7 @@ main() {
     exit 1
   fi
 
-  while getopts "hd:k:o:p:P:su:" opt; do
+  while getopts "hd:k:o:p:P:su:S:c:" opt; do
     case $opt in
       \?)
         exit 1
@@ -131,6 +135,12 @@ main() {
       ;;
       u)
         USERNAME="$OPTARG"
+      ;;
+      S)
+        SCRIPT_PATH="$OPTARG"
+      ;;
+      c)
+        CONFIG_PATH="$OPTARG"
       ;;
     esac
   done

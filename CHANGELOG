@@ -1,3 +1,6 @@
+Version 0.6 - 2014/04/01
+  * Handles the new Humble Bundle page using PhantomJS
+
 Version 0.5 - 2014/01/12
   * Fixed handling of passwords containing special characters
   * Added interactive password prompting when password not provided as argument
