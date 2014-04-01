@@ -2,7 +2,8 @@ system = require('system')
 
 # prints a log message if the LOG environment variable is set
 if system.env.LOG?
-  exports.log = log = system.stderr.writeLine
+  exports.log = log = (message) ->
+    system.stderr.writeLine "#{new Date().toString()} #{message}"
 else
   exports.log = log = ->
 
