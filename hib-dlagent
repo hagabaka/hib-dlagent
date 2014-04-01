@@ -19,8 +19,10 @@ STORAGE=
 
 discover_url() {
   local LISTING_PAGE="$1"
-  phantomjs --config="$CONFIG_PATH"/phantomjs-config.json --cookies-file="$COOKIE_JAR" \
-    "$SCRIPT_PATH"/discover-url.coffee "$LISTING_PAGE" "$FILE" "$USERNAME" "$PASSWORD"
+  # Running a new shell in order to split PHANTOM_JS_OPTIONS into multiple arguments
+  sh -c "phantomjs --config='$CONFIG_PATH'/phantomjs-config.json --cookies-file='$COOKIE_JAR' \
+         $PHANTOM_JS_OPTIONS \
+         '$SCRIPT_PATH'/discover-url.coffee '$LISTING_PAGE' '$FILE' '$USERNAME' '$PASSWORD'"
 }
 
 usage() {
@@ -30,18 +32,19 @@ Tool to download Humble Indie Bundle binaries by file name
 
 Usage: $0 [OPTIONS] FILE
 Options:
- -d <dir>   Directory for searching and saving files. The normal save location
-            is still used, but will be a symbolic link
- -h         This help
- -k <key>   Search key's files. Use multiple times for multiple keys
- -o <file>  Name to use when saving file
- -p <pass>  Use pass to login. If specified multiple times, the last is used
- -P <pname> The name of the password available via gnome-keyring-query
- -s         Print URL to stdout instead of downloading. Incompatible with -d
- -u <user>  Use user to login. Search account's files. If specified multiple
-            times, the last is used
- -S <dir>   Directory where PhantomJs scripts are located.
- -c <dir>   Directory where configuration files are located.
+ -d <dir>     Directory for searching and saving files. The normal save location
+              is still used, but will be a symbolic link
+ -h           This help
+ -k <key>     Search key's files. Use multiple times for multiple keys
+ -o <file>    Name to use when saving file
+ -p <pass>    Use pass to login. If specified multiple times, the last is used
+ -P <pname>   The name of the password available via gnome-keyring-query
+ -s           Print URL to stdout instead of downloading. Incompatible with -d
+ -u <user>    Use user to login. Search account's files. If specified multiple
+              times, the last is used
+ -S <dir>     Directory where PhantomJS scripts are located.
+ -c <dir>     Directory where configuration files are located.
+ -j <options> Additional options passed to PhantomJS
 
 If you specify -u, then all of that account's bundles are searched. If a key is
 associated with a HIB account then you must use -u/-p, since that key only works
@@ -96,7 +99,7 @@ main() {
     exit 1
   fi
 
-  while getopts "hd:k:o:p:P:su:S:c:" opt; do
+  while getopts "hd:k:o:p:P:su:S:c:j:" opt; do
     case $opt in
       \?)
         exit 1
@@ -131,6 +134,9 @@ main() {
       ;;
       c)
         CONFIG_PATH="$OPTARG"
+      ;;
+      j)
+        PHANTOM_JS_OPTIONS="$OPTARG"
       ;;
     esac
   done
