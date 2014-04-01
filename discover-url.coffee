@@ -4,8 +4,9 @@ system = require 'system'
 util = require './util'
 page = util.page
 
+util.log "Opening listing page..."
 page.open listing_page, (status) ->
-  util.log "Open listing page: #{status}"
+  util.log "Opened listing page: #{status}"
   util.handle_login_captcha ->
     util.log 'Searching URLs...'
     url = page.evaluate (filename) ->
