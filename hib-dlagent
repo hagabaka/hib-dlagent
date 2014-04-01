@@ -45,6 +45,7 @@ Options:
  -S <dir>     Directory where PhantomJS scripts are located.
  -c <dir>     Directory where configuration files are located.
  -j <options> Additional options passed to PhantomJS
+ -l           Turn on logging
 
 If you specify -u, then all of that account's bundles are searched. If a key is
 associated with a HIB account then you must use -u/-p, since that key only works
@@ -99,7 +100,7 @@ main() {
     exit 1
   fi
 
-  while getopts "hd:k:o:p:P:su:S:c:j:" opt; do
+  while getopts "hd:k:o:p:P:su:S:c:j:l" opt; do
     case $opt in
       \?)
         exit 1
@@ -137,6 +138,9 @@ main() {
       ;;
       j)
         PHANTOM_JS_OPTIONS="$OPTARG"
+      ;;
+      l)
+        export LOG=1
       ;;
     esac
   done

@@ -46,7 +46,7 @@ Troubleshooting
 Extracting URLs from Humble Bundle's mostly dynamically-generated website can be
 error-prone, and time consuming. Currently it can take about 20 seconds for the
 script to run. If the script fails or gets stuck, it may help to turn on logging
-by setting the LOG environment variable to a non-empty value.
+by with the -l option.
 
 It is also possible to turn on PhantomJS's debug output with '-j --debug=true',
 but note that this output is very verbose and targeted to developers, and it may
