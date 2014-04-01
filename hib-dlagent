@@ -17,15 +17,6 @@ PASSWORD=
 KEYS=()
 STORAGE=
 
-login() {
-  if [ -z "$PASSWORD" ]; then
-    read -rsp 'Enter Humble account password: ' PASSWORD
-    echo
-  fi
-  phantomjs --config="$CONFIG_PATH"/phantomjs-config.json --cookies-file="$COOKIE_JAR" \
-    "$SCRIPT_PATH"/login.coffee "$LOGIN_PAGE" "$USERNAME" "$PASSWORD"
-}
-
 discover_url() {
   local LISTING_PAGE="$1"
   phantomjs --config="$CONFIG_PATH"/phantomjs-config.json --cookies-file="$COOKIE_JAR" \
@@ -66,7 +57,6 @@ handle_download() {
   COOKIE_JAR=$(mktemp)
 
   if [ -n "$USERNAME" ]; then
-    login
     LISTING_PAGES+=("$HOME_PAGE")
   fi
 
