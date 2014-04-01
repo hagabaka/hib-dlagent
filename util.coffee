@@ -25,11 +25,8 @@ exports.display_screenshot = display_screenshot = ->
   page.render screenshot
   child_process.spawn 'display', [screenshot]
 
-# handles login/captcha boxes, and calls the passed action() when logged in
-exports.handle_login_captcha = handle_login_captcha = (action, username, password) ->
-  need_to_submit = false
-
-  # complete a login form if there is one
+# checks if there is a login form, and if so, completes it and returns true
+exports.handle_login = handle_login = (username, password) ->
   if page.evaluate(-> document.querySelector 'input[name="username"]')
     log 'Entering login information...'
     page.evaluate (username, password) ->
@@ -39,10 +36,11 @@ exports.handle_login_captcha = handle_login_captcha = (action, username, passwor
         username_box.value = username
       if password_box
         password_box.value = password
+      (username_box or password_box)?
     , username, password
-    need_to_submit = true
 
-  # handle a captcha box if there is one
+# checks if there is captcha, and if so, handles it and returns true
+exports.handle_captcha = handle_captcha = ->
   if page.evaluate(-> document.querySelector '#recaptcha_response_field')
     log 'Humble Bundle wants you to solve a captcha. Displaying screenshot...'
     display_process = display_screenshot()
@@ -56,13 +54,17 @@ exports.handle_login_captcha = handle_login_captcha = (action, username, passwor
         captcha_box = document.querySelector '#recaptcha_response_field'
         captcha_box.value = input
     , input
-    need_to_submit = true
 
-  if need_to_submit
+# handles login/captcha, repeating if necessary, and performs the action
+exports.handle_login_captcha = handle_login_captcha = (action, username, password) ->
+  entered_login = handle_login(username, password)
+  entered_captcha = handle_captcha()
+  if entered_login or entered_captcha
     # Entered information, submit and check for captcha/login again after load finishes
     log 'Submitting login information and/or captcha response...'
     page.onLoadFinished = -> handle_login_captcha action, username, password
     page.evaluate ->
+      # FIXME make sure we're submitting the right form
       form = document.querySelector('form')
       if form
         form.submit()
