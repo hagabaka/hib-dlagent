@@ -1,9 +1,5 @@
 {
-//  "autoLoadImages": false,
   "webSecurityEnabled": false,
   "ignoreSslErrors": true,
-  "proxyType": "none",
   "diskCacheEnabled": true,
-  "debug": true,
-  "libraryPath": ".",
 }
