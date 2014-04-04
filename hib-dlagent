@@ -62,6 +62,10 @@ handle_download() {
 
   if [ -n "$USERNAME" ]; then
     LISTING_PAGES+=("$HOME_PAGE")
+    if [ -z "$PASSWORD" ]; then
+      read -rsp 'Enter Humble account password: ' PASSWORD
+      echo
+    fi
   fi
 
   for KEY in "${KEYS[@]}"; do
