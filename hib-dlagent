@@ -20,9 +20,10 @@ STORAGE=
 discover_url() {
   local LISTING_PAGE="$1"
   # Running a new shell in order to split PHANTOM_JS_OPTIONS into multiple arguments
+  PASSWORD="$PASSWORD" \
   sh -c "phantomjs --config='$CONFIG_PATH'/phantomjs-config.json --cookies-file='$COOKIE_JAR' \
          $PHANTOM_JS_OPTIONS \
-         '$SCRIPT_PATH'/discover-url.coffee '$LISTING_PAGE' '$FILE' '$USERNAME' '$PASSWORD'"
+         '$SCRIPT_PATH'/discover-url.coffee '$LISTING_PAGE' '$FILE' '$USERNAME'"
 }
 
 usage() {

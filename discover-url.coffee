@@ -1,5 +1,7 @@
 system = require 'system'
-[_, listing_page, filename, username, password] = system.args
+[_, listing_page, filename, username] = system.args
+password = system.env.PASSWORD
+system.env.PASSWORD = ''
 
 util = require './util'
 page = util.page
