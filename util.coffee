@@ -32,10 +32,8 @@ exports.handle_login = handle_login = (username, password) ->
     page.evaluate (username, password) ->
       username_box = document.querySelector 'input[name="username"]'
       password_box = document.querySelector 'input[name="password"]'
-      if username_box
-        username_box.value = username
-      if password_box
-        password_box.value = password
+      username_box?.value = username
+      password_box?.value = password
       (username_box or password_box)?
     , username, password
 
@@ -52,7 +50,7 @@ exports.handle_captcha = handle_captcha = ->
         Recaptcha.reload()
       else
         captcha_box = document.querySelector '#recaptcha_response_field'
-        captcha_box.value = input
+        captcha_box?.value = input
     , input
 
 # handles login/captcha, repeating if necessary, and performs the action
@@ -66,8 +64,7 @@ exports.handle_login_captcha = handle_login_captcha = (action, username, passwor
     page.evaluate ->
       # FIXME make sure we're submitting the right form
       form = document.querySelector('form')
-      if form
-        form.submit()
+      form?.submit()
   else
     log 'Logged in...'
     action()
