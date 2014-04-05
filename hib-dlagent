@@ -4,7 +4,6 @@ set -e
 VERSION=0.6
 LOGIN_PAGE=https://www.humblebundle.com/login
 HOME_PAGE=https://www.humblebundle.com/home
-COOKIE_JAR=
 
 SCRIPT_PATH='/usr/share/hib-dlagent'
 CONFIG_PATH='/etc/hib-dlagent'
@@ -21,8 +20,7 @@ discover_url() {
   local LISTING_PAGE="$1"
   # Running a new shell in order to split PHANTOM_JS_OPTIONS into multiple arguments
   PASSWORD="$PASSWORD" \
-  sh -c "phantomjs --config='$CONFIG_PATH'/phantomjs-config.json --cookies-file='$COOKIE_JAR' \
-         $PHANTOM_JS_OPTIONS \
+  sh -c "phantomjs --config='$CONFIG_PATH'/phantomjs-config.json $PHANTOM_JS_OPTIONS \
          '$SCRIPT_PATH'/discover-url.coffee '$LISTING_PAGE' '$FILE' '$USERNAME'"
 }
 
@@ -59,8 +57,6 @@ handle_download() {
   local SAVE_FILE="$1"
   local LISTING_PAGES=()
 
-  COOKIE_JAR=$(mktemp)
-
   if [ -n "$USERNAME" ]; then
     LISTING_PAGES+=("$HOME_PAGE")
     if [ -z "$PASSWORD" ]; then
@@ -83,9 +79,6 @@ handle_download() {
     URL=$(discover_url "$LISTING_PAGE")
     if [ -n "$URL" ]; then break; fi
   done
-
-  # Cookie no longer necessary.
-  rm "$COOKIE_JAR"
 
   if [ ! -n "$URL" ]; then
     echo "Could not find URL for file: $FILE" >&2
