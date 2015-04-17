@@ -1,3 +1,6 @@
+Version 0.7 - 2015/04/16
+  * Handles the new Humble Bundle page again using humblebundle-python
+
 Version 0.6 - 2014/04/01
   * Handles the new Humble Bundle page using PhantomJS
 

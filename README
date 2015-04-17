@@ -15,39 +15,23 @@ It also manages a storage directory where already downloaded file can be found.
 Installation and Usage
 ======================
 
-This utility currently requires PhantomJS in order to extract links on Humble
-Bundle's dynamically generated webpages. It also uses 'display', part of
-ImageMagick, to handle any captchas. (It does not solve captchas for you, but
-only displays a screenshot of the web page and asks you to enter the answers.)
+This utility currently requires humblebundle-python to query HumbleBundle's API.
 It uses curl to download the file, or can simply provide the URL needed to
 download the file so a different HTTP downloader such a Wget can be used.
 
-To run hib-dlagent without installating it, add parameters '-S. -c.', which
-tells it to look for scripts and the configuration file in the current
-directory.
+To run hib-dlagent without installating it, add parameters '-S.', which
+tells it to look for helper script(s) in the current directory.
 
-By default hib-dlagent assumes the .coffee scripts are installed in
-/usr/share/hib-dlagent, and the .json configuration file is installed in
-/etc/hib-dlagent. The provided install.sh will install files into these
-locations. If they are installed elsewhere, it is necessary to either run
-hib-dlagent with the corresponding -S and -c parameters, or edit the variables
+By default hib-dlagent assumes the helper script is installed in
+/usr/share/hib-dlagent. The provided install.sh will install files into this
+location. If they are installed elsewhere, it is necessary to either run
+hib-dlagent with the corresponding -S parameters, or edit the variables
 SCRIPT_PATH and CONFIG_PATH in hib-dlagent.
 
 To use as a DLAGENT for the 'hib' scheme, you can modify makepkg.conf:
 DLAGENTS=(...
-    'hib::/usr/bin/hib-dlagent -k 1a2b3c -o %o %u'
+    'hib::/usr/bin/hib-dlagent -u user@example.org -o %o %u'
     ...)
 
 Run with the -h argument for more information.
 
-Troubleshooting
-===============
-
-Extracting URLs from Humble Bundle's mostly dynamically-generated website can be
-error-prone, and time consuming. Currently it can take about 20 seconds for the
-script to run. If the script fails or gets stuck, it may help to turn on logging
-by with the -l option.
-
-It is also possible to turn on PhantomJS's debug output with '-j --debug=true',
-but note that this output is very verbose and targeted to developers, and it may
-contain your Humble Bundle login information in plain text.

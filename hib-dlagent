@@ -19,9 +19,7 @@ STORAGE=
 discover_url() {
   local LISTING_PAGE="$1"
   # Running a new shell in order to split PHANTOM_JS_OPTIONS into multiple arguments
-  PASSWORD="$PASSWORD" \
-  sh -c "phantomjs --config='$CONFIG_PATH'/phantomjs-config.json $PHANTOM_JS_OPTIONS \
-         '$SCRIPT_PATH'/discover-url.coffee '$LISTING_PAGE' '$FILE' '$USERNAME'"
+  PASSWORD="$PASSWORD" "$SCRIPT_PATH"/discover-url.py "$LISTING_PAGE" "$FILE" "$USERNAME"
 }
 
 usage() {
@@ -41,10 +39,8 @@ Options:
  -s           Print URL to stdout instead of downloading. Incompatible with -d
  -u <user>    Use user to login. Search account's files. If specified multiple
               times, the last is used
- -S <dir>     Directory where PhantomJS scripts are located.
+ -S <dir>     Directory where helper scripts are located.
  -c <dir>     Directory where configuration files are located.
- -j <options> Additional options passed to PhantomJS
- -l           Turn on logging
 
 If you specify -u, then all of that account's bundles are searched. If a key is
 associated with a HIB account then you must use -u/-p, since that key only works
@@ -133,12 +129,6 @@ main() {
       ;;
       c)
         CONFIG_PATH="$OPTARG"
-      ;;
-      j)
-        PHANTOM_JS_OPTIONS="$OPTARG"
-      ;;
-      l)
-        export LOG=1
       ;;
     esac
   done
