@@ -17,7 +17,7 @@ for order in order_list:
         for download in subproduct.downloads:
             for download_struct in download.download_struct:
                 url = download_struct.url.web
-                if filename in url:
+                if url and filename in url:
                     print(url)
                     exit()
 
