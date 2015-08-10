@@ -23,7 +23,7 @@ To run hib-dlagent without installating it, add parameters '-S.', which
 tells it to look for helper script(s) in the current directory.
 
 By default hib-dlagent assumes the helper script is installed in
-/usr/share/hib-dlagent. The provided install.sh will install files into this
+/usr/share/hib-dlagent. The provided Makefile will install files into this
 location. If they are installed elsewhere, it is necessary to either run
 hib-dlagent with the corresponding -S parameters, or edit the variables
 SCRIPT_PATH and CONFIG_PATH in hib-dlagent.
