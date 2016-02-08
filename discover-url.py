@@ -9,7 +9,11 @@ username = sys.argv[3]
 password = os.environ['PASSWORD']
 
 client = humblebundle.HumbleApi()
-client.login(username, password)
+try:
+    client.login(username, password)
+except humblebundle.exceptions.HumbleTwoFactorException as e:
+    print(e, end=': ', file=sys.stderr)
+    client.login(username, password, input())
 
 order_list = client.order_list()
 for order in order_list:
