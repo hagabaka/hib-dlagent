@@ -14,6 +14,9 @@ try:
 except humblebundle.exceptions.HumbleTwoFactorException as e:
     print(e, end=': ', file=sys.stderr)
     client.login(username, password, input())
+except humblebundle.exceptions.HumbleAuthenticationException as e:
+    print(e, file=sys.stderr)
+    exit()
 
 order_list = client.order_list()
 for order in order_list:
